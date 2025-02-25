@@ -27,11 +27,11 @@ layout:
 
 ## 🔗 Jump right in
 
-<table data-view="cards"><thead><tr><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>How To Study</strong></td><td>스터디 진행 방식</td><td><a href=".gitbook/assets/star.png">star.png</a></td><td></td><td><a href="all-about-study/quickstart.md">quickstart.md</a></td></tr><tr><td>How To Use GitBook</td><td>깃북 활용에 대하여</td><td><a href=".gitbook/assets/pngegg.png">pngegg.png</a></td><td></td><td></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>How To Study</strong></td><td>스터디 진행 방식</td><td><a href=".gitbook/assets/star.png">star.png</a></td><td></td><td><a href="all-about-study/howtostudy.md">howtostudy.md</a></td></tr><tr><td>How To Use GitBook</td><td>깃북 활용에 대하여</td><td><a href=".gitbook/assets/pngegg.png">pngegg.png</a></td><td></td><td></td></tr></tbody></table>
 
 ## 🎹 Study Timeline
 
-자세한 스터디 진행 방식은 [스터디 진행 방식](all-about-study/quickstart.md) 페이지를 참고해 주세요
+자세한 스터디 진행 방식은 [스터디 진행 방식](all-about-study/howtostudy.md) 페이지를 참고해 주세요
 
 {% stepper %}
 {% step %}
@@ -49,6 +49,6 @@ layout:
 {% step %}
 #### 🗨️ 발표 및 질의응답
 
-10분 이내의 발표 및 질의응답을 통해 한 번 더 이해하기
+15분 이내의 발표 및 질의응답을 통해 한 번 더 이해하기
 {% endstep %}
 {% endstepper %}
