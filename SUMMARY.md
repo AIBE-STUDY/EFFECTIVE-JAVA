@@ -4,8 +4,8 @@
 
 ## 🐢 All About Study
 
-* [🧩 스터디 진행 방식](all-about-study/quickstart.md)
-* [📔 깃북 활용법](all-about-study/publish-your-docs.md)
+* [🧩 스터디 진행 방식](all-about-study/howtostudy.md)
+* [📔 깃북 활용법](all-about-study/howtousegitbook.md)
 * [🔎 아이템 체크리스트](all-about-study/checklist.md)
 
 ***
