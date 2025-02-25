@@ -1,21 +1,5 @@
----
-cover: .gitbook/assets/제목을 입력해주세요_-001 (2).jpg
-coverY: 25.87639612807148
-layout:
-  cover:
-    visible: true
-    size: hero
-  title:
-    visible: true
-  description:
-    visible: false
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
+![Image](https://github.com/user-attachments/assets/ef3b3964-0eb1-467b-9d46-ad5e6360ba28)
+
 
 # 🍄 All About Effective Java
 
