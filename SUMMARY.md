@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome](README.md)
+* [🍄 All About Effective Java](README.md)
 
 ## Getting Started
 
