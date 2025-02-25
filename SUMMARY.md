@@ -16,3 +16,4 @@
 * [2️⃣ 객체 생성과 파괴](effective-java/editor/README.md)
   * [1. 생성자 대신 정적 팩터리 메서드를 고려하라](effective-java/editor/1..md)
   * [2. 생성자에 매개변수가 많다면 빌더를 고려하라](effective-java/editor/2..md)
+* [3️⃣ 모든 객체의 공통 메서드](effective-java/undefined.md)
