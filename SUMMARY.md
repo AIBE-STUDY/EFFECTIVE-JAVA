@@ -11,8 +11,8 @@
 ## 💾 Effective Java
 
 * [2️⃣ 객체 생성과 파괴](effective-java/section2/README.md)
-  * [1. 생성자 대신 정적 팩터리 메서드를 고려하라](effective-java/section2/1..md)
-  * [2. 생성자에 매개변수가 많다면 빌더를 고려하라](effective-java/section2/2..md)
+  * [1. 생성자 대신 정적 팩터리 메서드를 고려하라](effective-java/section2/1.Consider_static_factory_methods_instead_of_constructors.md)
+  * [2. 생성자에 매개변수가 많다면 빌더를 고려하라](effective-java/section2/2.Consider_a_builder_when_faced_with_many_constructor_parameters.md)
   * [3. private 생성자나 열거 타입으로 싱글턴임을 보증하라](effective-java/section2/3.-private.md)
   * [4. 인스턴스화를 막으려거든 private 생성자를 사용하라](effective-java/section2/4.-private.md)
   * [5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라](effective-java/section2/5.Prefer_dependency_injection_to_hardwiring_resources.md)
