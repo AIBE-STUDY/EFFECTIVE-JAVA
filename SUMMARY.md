@@ -15,7 +15,7 @@
   * [2. 생성자에 매개변수가 많다면 빌더를 고려하라](effective-java/section2/2..md)
   * [3. private 생성자나 열거 타입으로 싱글턴임을 보증하라](effective-java/section2/3.-private.md)
   * [4. 인스턴스화를 막으려거든 private 생성자를 사용하라](effective-java/section2/4.-private.md)
-  * [5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라](effective-java/section2/5..md)
+  * [5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라](effective-java/section2/5.자원을직접명시하지말고의존객체주입을사용하라.md)
   * [6. 불필요한 객체 생성을 피하라](effective-java/section2/6..md)
   * [7. 다 쓴 객체 참조를 해제하라](effective-java/section2/7..md)
   * [8. finalizer와 cleaner 사용을 피하라](effective-java/section2/8.-finalizer-cleaner.md)
