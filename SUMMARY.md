@@ -21,7 +21,7 @@
   * [8. finalizer와 cleaner 사용을 피하라](effective-java/section2/8.-finalizer-cleaner.md)
   * [9. try-finally보다는 try-with-resources를 사용하라](effective-java/section2/9.-try-finally-try-with-resources.md)
 * [3️⃣ 모든 객체의 공통 메서드](effective-java/section3/README.md)
-  * [10. equals는 일반 규약을 지켜 재정의하라](effective-java/section3/10.-equals.md)
+  * [10. equals는 일반 규약을 지켜 재정의하라](effective-java/section3/10.Obey_the_general_contract_when_overriding_equals.md)
   * [11. equals를 재정의하려거든 hashCode도 재정의하라](effective-java/section3/11.-equals-hashcode.md)
   * [12. toString을 항상 재정의하라](effective-java/section3/12.-tostring.md)
   * [13. clone 재정의는 주의해서 진행하라](effective-java/section3/13.-clone.md)
