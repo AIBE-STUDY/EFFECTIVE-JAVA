@@ -17,7 +17,7 @@
   * [4. 인스턴스화를 막으려거든 private 생성자를 사용하라](effective-java/section2/4.Enforce_noninstantiability_with_a_private_constructor.md)
   * [5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라](effective-java/section2/5.Prefer_dependency_injection_to_hardwiring_resources.md)
   * [6. 불필요한 객체 생성을 피하라](effective-java/section2/6.Avoid_creating_unnecessary_objects.md)
-  * [7. 다 쓴 객체 참조를 해제하라](effective-java/section2/7.Eliminate-obsolete-object-referencesmd)
+  * [7. 다 쓴 객체 참조를 해제하라](effective-java/section2/7.Eliminate-obsolete-object-references.md)
   * [8. finalizer와 cleaner 사용을 피하라](effective-java/section2/8.Avoid-finalizers-and-cleaners.md)
   * [9. try-finally보다는 try-with-resources를 사용하라](effective-java/section2/9.Prefer-try-with-resources-to-try-finally.md)
 * [3️⃣ 모든 객체의 공통 메서드](effective-java/section3/README.md)
