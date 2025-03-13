@@ -24,8 +24,9 @@
   * [10. equals는 일반 규약을 지켜 재정의하라](effective-java/section3/10.Obey_the_general_contract_when_overriding_equals.md)
   * [11. equals를 재정의하려거든 hashCode도 재정의하라](effective-java/section3/11.Always_override_hashCode_when_you_override_equals.md)
   * [12. toString을 항상 재정의하라](effective-java/section3/12.Always_override_toString.md)
-  * [13. clone 재정의는 주의해서 진행하라](effective-java/section3/13.-clone.md)
-  * [14. Comparable을 구현할지 고려하라](effective-java/section3/14.-comparable.md)
+  * [13. clone 재정의는 주의해서 진행하라](effective-java/section3/13.Override_clone_judiciously.md)
+  * [14. Comparable을 구현할지 고려하라](effective-java/section3/14.Consider_implementing_Comparable.md
+)
 * [클래스와 인터페이스](effective-java/section4/README.md)
   * [15. 클래스와 멤버의 접근 권한을 최소화하라](effective-java/section4/15.Minimize_the_accessibility_of_classes_and_members.md)
   * [16. public 클래스에서는 public 필드가 아닌 접근자 메서드를 사용하라](effective-java/section4/16.In_public_classes,_use_accessor_methods,_not_public_fields.md)
