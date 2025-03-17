@@ -33,6 +33,6 @@
   - [18. 상속보다는 컴포지션을 사용하라](effective-java/section4/18.Favor_composition_over_inheritance.md)
   - [19. 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라](effective-java/section4/19.Design_and_document_for_inheritance_or_else_prohibit_it.md)
   - [20. 추상 클래스보다는 인터페이스를 우선하라](effective-java/section4/20.Prefer_interfaces_to_abstract_classes.md)
-  - [21. 인터페이스는 구현하는 쪽을 생각해 설계하라](effective-java/section4/21..md)
-  - [22. 인터페이스는 타입을 정의하는 용도로만 사용하라](effective-java/section4/22..md)
+  - [21. 인터페이스는 구현하는 쪽을 생각해 설계하라](effective-java/section4/21.Design_interfaces_for_posterity.md)
+  - [22. 인터페이스는 타입을 정의하는 용도로만 사용하라](effective-java/section4/22.Use_interfaces_only_to_define_types.md)
 - [제네릭](effective-java/section5.md)
