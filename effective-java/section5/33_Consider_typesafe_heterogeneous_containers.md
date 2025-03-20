@@ -348,3 +348,7 @@ public class TypeTokenExample {
 ✅ 이 방식이 Favorites 클래스처럼 "타입 안전 이종 컨테이너"를 만들 때 필수적으로 사용됨.
 
 🚀 ➡ "타입 토큰(Type Token)은 런타임에 제네릭 타입 정보를 유지하기 위한 Class<T> 객체이다!" 🚀
+
+---
+**발표자료**
+https://byumm315.atlassian.net/wiki/external/ZmJmYTI5N2JiN2U5NDViM2E5ODk4NDg1NTFiNDk5YTg
