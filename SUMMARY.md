@@ -43,7 +43,7 @@
 - [제네릭](effective-java/section5.md)
   - [26. 로 타입은 사용하지 말라](effective-java/section5/26.Dont_use_raw_types.md)
   - [27. 비검사 경고를 제거하라](effective-java/section5/27.Eliminate_unchecked_warnings.md)
-  - [28. 배열보다는 리스트를 사용하라](effective-java/section5/28_Prefer_lists_to_arrays.md)
+  - [28. 배열보다는 리스트를 사용하라](effective-java/section5/28.Prefer_lists_to_arrays.md)
   - [29. 이왕이면 제네릭 타입으로 만들라](effective-java/section5/29.Favor_generic_types.md)
   - [30. 이왕이면 제네릭 메서드로 만들라](effective-java/section5/30.Favor_generic_methods.md)
   - [31. 한정적 와일드카드를 사용해 API 유연성을 높이라](effective-java/section5/31.Use_bounded_wildcards_to_increase_API_flexibility.md)
