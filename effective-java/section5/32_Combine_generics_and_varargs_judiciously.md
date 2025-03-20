@@ -10,8 +10,7 @@ warning: [unchecked] Possible heap pollution from parameterized vararg type List
 - 이러한 타입들은 **타입 소거(type erasure)** 과정을 거쳐 런타임에는 구체적인 타입 인자가 소실되어 List와 같은 로(raw) 타입으로 처리됨.
 
 - **가변 인수**: 메서드에 임의의 개수의 인수를 전달할 수 있도록 하는 기능. 내부적으로는 이 인수들을 담기 위한 배열이 자동으로 생성됨.
-
-예시) `List<String>... lists` → 내부적으로 `List<String>[]` 배열로 변환됨.
+- 예시) `List<String>... lists` → 내부적으로 `List<String>[]` 배열로 변환됨.
 
 
 **What If…메서드를 선언할 때 실체화 불가 타입으로 varargs 매개변수를 선언하면? (Ex. `List<String>`으로 varags 매개변수 선언)**
@@ -212,3 +211,8 @@ String value = attributes[0]; // (4) Integer를 String으로 변환 → ClassCas
 - 이를 해결하려면 가변 인자 대신 `List<T>`를 매개변수로 사용하여 컴파일러가 타입 검사를 수행할 수 있도록 해야 한다.
 - 이 방법은 `@SafeVarargs`를 사용하지 않아도 안전하며, 실수로 잘못된 타입을 추가하는 위험을 줄일 수 있다.
 - 배열(`T[]`) 대신 `List<T>`를 사용하면 힙 오염을 방지하고, 타입 안전성을 유지할 수 있다.
+
+---
+**발표 자료**
+
+https://byumm315.atlassian.net/wiki/external/NmZjYjg3OWVhYWE5NGZmNzk4NDUyOWJjZTIxNjM2MDQ
