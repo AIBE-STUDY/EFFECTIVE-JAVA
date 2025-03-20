@@ -204,15 +204,6 @@ objArray[0] = 100;
 String value = attributes[0]; // (4) Integer를 String으로 변환 → ClassCastException!
 ```
 ---
-
-### varargs 매개변수를 List 매개변수로 대체하기
-
-- 가변 인수(varargs)는 내부적으로 배열을 사용하므로 제네릭 타입과 함께 사용하면 타입 안전성이 깨질 위험이 있다.
-- 이를 해결하려면 가변 인자 대신 `List<T>`를 매개변수로 사용하여 컴파일러가 타입 검사를 수행할 수 있도록 해야 한다.
-- 이 방법은 `@SafeVarargs`를 사용하지 않아도 안전하며, 실수로 잘못된 타입을 추가하는 위험을 줄일 수 있다.
-- 배열(`T[]`) 대신 `List<T>`를 사용하면 힙 오염을 방지하고, 타입 안전성을 유지할 수 있다.
-
----
 **발표 자료**
 
 https://byumm315.atlassian.net/wiki/external/NmZjYjg3OWVhYWE5NGZmNzk4NDUyOWJjZTIxNjM2MDQ
