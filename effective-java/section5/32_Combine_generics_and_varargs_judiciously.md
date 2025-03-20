@@ -1,0 +1,214 @@
+## 제네릭과 가변인수를 함께 쓸 때 발생하는 문제
+
+### "메서드를 선언할 때 실체화 불가 타입으로 varargs 매개 변수를 선언하면? 컴파일러가 경고를 보낸다."
+
+```
+warning: [unchecked] Possible heap pollution from parameterized vararg type List<String>
+```
+
+- **실체화 불가 타입**: 런타임 시점에 타입 정보가 완전히 남아있지 않는 타입 (Ex. 제네릭 타입(List<T>, …), 매개변수화된 타입(List<String>, …))
+- 이러한 타입들은 **타입 소거(type erasure)** 과정을 거쳐 런타임에는 구체적인 타입 인자가 소실되어 List와 같은 로(raw) 타입으로 처리됨.
+
+- **가변 인수**: 메서드에 임의의 개수의 인수를 전달할 수 있도록 하는 기능. 내부적으로는 이 인수들을 담기 위한 배열이 자동으로 생성됨.
+
+예시) `List<String>... lists` → 내부적으로 `List<String>[]` 배열로 변환됨.
+
+
+**What If…메서드를 선언할 때 실체화 불가 타입으로 varargs 매개변수를 선언하면? (Ex. `List<String>`으로 varags 매개변수 선언)**
+
+1. 자바에서는 제네릭 배열(`List<String>[]`)을 직접 생성할 수 없음.
+- `new List<String>[10];` 같은 코드를 작성하면 컴파일 오류 발생 → 타입 소거(Type Erasure) 때문에 런타임에는 로 타입으로 처리됨.
+2. 실체화 불가 타입으로 varargs 매개변수를 선언하면 (`List<String>... lists`) → 내부적으로 `List<String>[]` 배열이 생성됨.
+- 자바는 제네릭 배열을 금지함. 하지만 varargs를 사용하면 내부적으로 제네릭 배열이 생성될 수 있음.
+3. 컴파일러는 런타임 시 배열의 정확한 요소 타입을 알 수 없음.
+- 가변 인자(...)는 내부적으로 배열을 사용하므로, 타입 정보가 소거된 상태에서 배열을 다루게 됨.
+4. 제네릭 배열이 `Object[]`처럼 동작하여, 다른 타입의 객체를 저장할 가능성이 있음.
+- 따라서, 타입 안전성 문제가 발생할 가능성을 인지하고 경고를 발생시킴.
+
+---
+
+### "가변인수 메서드를 호출할 때도 varargs 매개 변수가 실체화 불가 타입으로 추론되면? 그 호출에 대해서도 경고를 낸다."
+
+```
+warning: [unchecked] Possible heap pollution from parameterized vararg type List<String>
+```
+
+- `T... args` 형태의 가변인수 메서드를 호출할 때, 때로는 전달되는 인수 `Hello, World`의 타입 `String`에 기반하여 varags 매개변수의 제네릭 타입 `T`가 `String`으로 추론될 수 있음.
+- 만약 추론된 타입이 실체화 불가 타입이라면? → 만약 `T`는 `List<String>`으로 추론된다면?
+- 런타임 시 타입 안전성 문제가 발생할 수 있음 → 내부적으로 `T... args`는 `List<String>[]`처럼 동작함.
+- 따라서 컴파일러는 이러한 호출에 대해서도 힙 오염이 발생될 수 있다는 경고를 발생시킴.
+
+**코드 예시 1 (가변 인수(varargs)와 제네릭 타입 추론)**
+
+자바에서는 메서드를 호출할 때 전달된 인수의 타입을 기반으로 제네릭 타입을 추론함.
+
+```java
+public class VarargsExample {
+    static <T> void printVarargs(T... args) { // 가변 인자로 제네릭 타입 T를 받는 메서드
+        for (T arg : args) {
+            System.out.println(arg);
+        }
+    }
+
+    public static void main(String[] args) {
+        printVarargs("Hello", "World"); // (1) T가 String으로 추론됨 → 안전
+        printVarargs(1, 2, 3); // (2) T가 Integer로 추론됨 → 안전
+    }
+}
+```
+
+- 위 코드에서는 `T`의 타입이 `String` 또는 `Integer`로 추론되며, 타입이 확실하기 때문에 문제가 없음.
+
+**코드 예시 2 (실체화 불가 타입(non-reifiable type) 문제)**
+
+제네릭 타입(`List<String>`, `List<Integer>`)을 가변 인자로 사용하면 문제가 발생할 수 있음.
+
+```java
+static <T> void unsafeVarargsMethod(T... args) { // 가변 인자로 T 타입을 받음
+    for (T arg : args) {
+        System.out.println(arg);
+    }
+}
+
+public static void main(String[] args) {
+    unsafeVarargsMethod(List.of("A"), List.of("B")); // (1) T가 List<String>으로 추론됨
+}
+```
+
+- 이 과정 자체는 문제가 없어 보이지만, 제네릭 타입이 가변 인자로 사용될 때는 Heap Pollution(힙 오염)이 발생할 위험이 있음.
+
+---
+
+### "매개변수화 타입의 변수가 타입이 다른 객체를 참조하면? 힙 오염이 발생한다."
+
+```
+Exception in thread "main" java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.String
+```
+
+- **힙 오염**: 제네릭 타입 시스템의 타입 안전성이 런타임 시에 깨지는 현상.
+- 매개변수화된 타입(예: `List<String>`)으로 선언된 변수가 컴파일 타임에 명시된 타입 인자와 다른 타입의 객체를 참조하게 될 때 발생.
+
+**힙 오염은 주로 다음과 같은 상황에서 발생할 수 있음.**
+
+1. **로 타입(raw type)**: 제네릭 타입을 사용할 때 타입 인자를 생략하면 로 타입(raw type)으로 간주.
+2. **로 타입(raw type)의 변수는 어떤 타입의 객체든 참조할 수 있음**.
+3. 매개변수화된 타입의 변수가 로 타입(raw type) 변수를 통해 다른 타입의 객체를 참조하게 되면 힙 오염이 발생할 수 있음.
+
+**코드 예시 (로 타입을 통해 힙 오염이 발생하는 경우)**
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+
+public class HeapPollutionRawType {
+    public static void main(String[] args) {
+        List<String> stringList = new ArrayList<>(); // (1) 제네릭 리스트 선언 -> stringList는 String 타입만 저장할 수 있는 리스트.
+        List rawList = stringList; // (2) 로 타입 변수에 참조 (컴파일 경고 발생) -> 로 타입(List)을 사용하면, 타입 정보가 사라져 Object처럼 동작함.
+        rawList.add(100); // (3) Integer 추가 가능 (힙 오염 발생)
+
+        // stringList는 원래 String을 저장하는 리스트였으므로 String을 기대함
+        // 원래 List<String>이지만, Integer가 들어감
+        // 컴파일러는 이를 감지하지 못함
+        
+        String s = stringList.get(0); // (4) 100(Integer)를 String으로 변환하려고 함 → 런타임 오류(ClassCastException) 가능
+        System.out.println(s);
+    }
+}
+```
+---
+
+### “가변인자로 제네릭 타입을 사용한다면? 타입 안전성 문제가 발생할 수 있음”
+
+```
+Exception in thread "main" java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.String
+```
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+
+public class VarargsGenericArray {
+    static void unsafeMethod(List<String>... lists) { // (1) 가변 인자로 제네릭 타입 사용 (컴파일 경고 발생) -> List<String>... lists → 내부적으로 List<String>[] 배열이 생성됨.
+        Object[] array = lists; // (2) List<String>[]이 Object[]로 변환됨 -> 배열은 공변성(covariant)을 가지므로 Object[]처럼 동작.
+        array[0] = List.of(1, 2, 3); // (3) List<Integer> 삽입 (컴파일 오류 없음!) -> List<String>[]인데 List<Integer>를 넣어도 컴파일러가 오류를 발생시키지 않음!
+        String s = lists[0].get(0); // (4) 런타임 오류 발생 가능! -> Integer 값을 String으로 변환하려고 시도 → ClassCastException 발생 가능.
+        System.out.println(s);
+    }
+}
+```
+---
+---
+
+## 컴파일 경고 무시해도, 힙 오염은 유발하지 않을 자신있어! `@SafeVarargs` 애너테이션
+
+- **@SafeVarargs**(자바 7 도입)는 제네릭 가변인자 메서드에서 발생하는 컴파일 경고를 억제하는 애너테이션이다.
+- `[unchecked] Possible heap pollution from parameterized vararg type List`
+- 메서드 작성자가 타입 안전성을 직접 보장해야 하며, 안전하지 않은 경우 힙 오염(Heap Pollution)과 `ClassCastException`을 유발할 수 있음.
+
+### 타입 안전성을 위한 조건 (1) - 가변 인수 배열을 수정하지 않기
+
+- 제네릭 가변 인자 메서드는 내부적으로 배열을 사용하므로, 배열의 요소를 수정하면 힙 오염(Heap Pollution)이 발생할 수 있음.
+- 특히, 가변 인자 배열(`List... lists`)에 다른 타입의 값을 할당하거나 덮어쓰면 타입 안정성이 깨짐.
+- 이로 인해 런타임에 `ClassCastException`과 같은 예외가 발생할 위험이 있음.
+
+**코드 예시**
+
+```java
+static void dangerous(List... stringLists) { // (1) 가변 인자로 여러 개의 List를 받는 메서드 선언
+    List intList = List.of(42); // (2) Integer 요소를 가진 불변 리스트 생성
+    Object[] objects = stringLists; // (3) stringLists(List[])를 Object[]로 변환 (배열은 공변성을 가지므로, List[]를 Object[]로 참조할 수 있음)
+    objects[0] = intList; // (4) stringLists의 첫 번째 요소를 List<Integer>로 덮어쓰기 → 힙 오염 발생!
+    String s = stringLists[0].get(0); // (5) 원래 List<String>을 기대했지만, 실제로는 Integer → ClassCastException 발생
+    System.out.println(s);
+}
+```
+---
+
+### 타입 안전성을 위한 조건 (2) - 가변 인자 배열의 참조를 외부로 노출하지 않기
+
+- 가변 인자로 받은 배열을 외부로 반환하면 안됨.
+- 이 배열이 외부에서 수정되면, 다른 타입의 값이 들어갈 수 있음.
+- 잘못된 타입이 저장되면, `ClassCastException` 같은 오류가 날 수 있음.
+- 컴파일 시에는 문제없지만, 실행 중 오류가 터짐.
+
+**코드 예시**
+
+```java
+static <T> T[] toArray(T... args) { // 이 메서드는 배열을 반환하는 메서드다. 또한, toArray는 입력값에 따라 반환되는 배열의 타입이 달라진다.
+    return args;
+}
+```
+
+- `toArray`가 어떻게 동작하는지 확인해보자.
+
+```java
+String[] strArray = toArray("A", "B"); // T는 String으로 추론된다. toArray("A", "B")는 "A", "B"를 포함하는 String[]을 반환한다.
+Integer[] intArray = toArray(1, 2);    // T는 Integer로 추론된다. toArray(1, 2)는 1, 2를 포함하는 Integer[]을 반환한다.
+```
+
+- 이 코드의 문제는 제네릭 배열(`T[]`)이 내부적으로 `Object[]`처럼 동작할 수 있다는 점!
+
+```java
+String[] attributes = toArray("좋은", "빠른", "저렴한"); // (1) toArray("좋은", "빠른", "저렴한")은 String[]을 반환한다.
+Object[] objArray = attributes; 
+
+// (2) 자바에서 String[]은 Object[]로 변환될 수 있다.
+//     배열은 공변성(Covariance)이 있기 때문에 String[]을 Object[]에 저장 가능하다.
+//     즉, objArray는 Object[]처럼 동작하게 된다.
+
+objArray[0] = 100; 
+
+// (3) Integer 저장 → 문제 발생! 
+//  objArray는 실제로는 String[]이지만, Object[]로 변환되었기 때문에 Integer를 저장할 수 있다.
+//  즉, String[]에 Integer가 들어가 버렸다.
+
+String value = attributes[0]; // (4) Integer를 String으로 변환 → ClassCastException!
+```
+---
+
+### varargs 매개변수를 List 매개변수로 대체하기
+
+- 가변 인수(varargs)는 내부적으로 배열을 사용하므로 제네릭 타입과 함께 사용하면 타입 안전성이 깨질 위험이 있다.
+- 이를 해결하려면 가변 인자 대신 `List<T>`를 매개변수로 사용하여 컴파일러가 타입 검사를 수행할 수 있도록 해야 한다.
+- 이 방법은 `@SafeVarargs`를 사용하지 않아도 안전하며, 실수로 잘못된 타입을 추가하는 위험을 줄일 수 있다.
+- 배열(`T[]`) 대신 `List<T>`를 사용하면 힙 오염을 방지하고, 타입 안전성을 유지할 수 있다.
