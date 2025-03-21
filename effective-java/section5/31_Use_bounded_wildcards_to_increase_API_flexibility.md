@@ -1,0 +1,428 @@
+# 한정적 와일드 카드를 사용해 API 유연성을 높이라
+
+<br/>
+
+---
+
+### 문제 코드
+
+```java
+public class Stack<E> {
+    private List<E> storage;
+
+    public void push(E e);
+    public E pop();
+    public boolean isEmpty();
+
+    //일련의 원소를 스택에 넣는 메서드
+    public void pushAll(Iterable<E> src) {
+        for (E e : src)
+            push(e);
+    }
+
+    //Stack안의 모든 원소를 주어진 컬렉션으로 옮겨 담는
+    public void popAll(Collection<E> dst) {
+        while (!isEmpty())
+            dst.add(pop());
+    }
+
+    public static void main(String[] args) {
+        Stack<Number> numberStack = new Stack<>();
+
+        ArrayList<Integer> integers =
+            new ArrayList<Integer>(List.of(10, 20, 30));
+
+        ArrayList<Double> doubles =
+            new ArrayList<Double>(List.of(10.3, 20.1, 30.55));
+
+        Collection<Object> objects = new ArrayList<>();
+
+
+        numberStack.pushAll(integers);
+        numberStack.pushAll(doubles);
+        numberStack.popAll(objects);
+    }
+}
+```
+
+<br/>
+
+- **공변성(Covariance) vs 불공변성(Invariance)**
+
+  | 구분         | 설명                | 예시                             | 허용 여부 |
+  | ------------ | ------------------- | -------------------------------- | --------- |
+  | **공변성**   | 하위 타입 관계 유지 | `Integer[]` → `Number[]`         | ⭕        |
+  | **불공변성** | 타입 관계 무시      | `List<Integer>` → `List<Number>` | ❌        |
+
+<br/>
+
+- 실행 결과
+  ```bash
+  java: incompatible types: java.lang.Iterable<java.lang.Integer> cannot be converted to java.lang.Iterable<java.lang.Number>
+  java: incompatible types: java.util.Collection<java.lang.Object> cannot be converted to java.util.Collection<java.lang.Number>
+  ```
+
+<br/><br/>
+
+### 해결책 : 한정적 와일드카드 타입
+
+```java
+public class Stack<E> {
+    private List<E> storage;
+
+    //...
+
+    //일련의 원소를 스택에 넣는 메서드
+    public void pushAll(Iterable<? extends E> src) {
+        for (E e : src)
+            push(e);
+    }
+
+    //Stack안의 모든 원소를 주어진 컬렉션으로 옮겨 담는
+    public void popAll(Collection<? super E> dst) {
+        while (!isEmpty())
+            dst.add(pop());
+    }
+}
+```
+
+- 핵심 메시지 : 유연성을 극대화하려면 원소의 생산자나 소비자용 입력 매개변수에 와일드카드 타입을 사용하라
+
+<br/>
+<br/>
+
+### PECS (Producer - Extends , Consumer - Super)
+
+- **와일드카드 타입**
+
+  | 종류               | 문법            | 용도                                | 예시                                 |
+  | ------------------ | --------------- | ----------------------------------- | ------------------------------------ |
+  | **비한정적**       | `<?>`           | 모든 타입 허용 (타입 제한 없음)     | `List<?> list = anyList;`            |
+  | **한정적 extends** | `<? extends T>` | **생산자(Producer)**: T의 하위 타입 | `pushAll(Iterable<? extends E> src)` |
+  | **한정적 super**   | `<? super T>`   | **소비자(Consumer)**: T의 상위 타입 | `popAll(Collection<? super E> dst)`  |
+
+<br/>
+
+- `생산자는 <? extends E> 를 사용하라`
+- `소비자는 <? super E> 를 사용하라`
+- PECS 공식은 와일드카드 타입을 사용하는 기본 원칙.
+
+<br/>
+
+### 생산자 예시1
+
+```java
+public class Chooser<T> {
+    private final List<T> choiceArray;
+
+//  public Chooser(Collection<T> choices) {
+    public Chooser(Collection<? extends T> choices) {
+       choiceArray = new ArrayList<>(choices);
+    }
+
+    //...
+}
+```
+
+<br/>
+
+### 생산자 예시2
+
+```java
+//s1과 s2 모두 E의 생산자
+public static <E> Set<E> union(Set<? extends E> s1, Set<? extends E> s2) {
+    Set<E> result = new HashSet<>(s1);
+    result.addAll(s2);
+    return result;
+}
+```
+
+```java
+Set<Integer> integers = Set.of(1, 3, 5);
+Set<Double> doubles = Set.of(2.0, 4.0, 6.0);
+Set<Number> numbers = union(integers, doubles);
+
+//자바 7 이하
+// Set<Number> numbers = Union.<Number>union(integers, doubles);
+```
+
+<br/>
+
+### 예시3 - Comparable을 구현한 E
+
+```java
+//public static <E extends Comparable<E>> E max(List<E> list)
+public static <E extends Comparable<? super E>> E max(List<? extends E> List) {
+    if (list.isEmpty())
+        throw new IllegalArgumentException("컬렉션이 비어 있습니다");
+
+    E result = null;
+
+    for (E e : list)
+        if (result == null || e.compareTo(result) > 0)
+            result = Object.requireNonNull(e);
+
+    return result;
+}
+```
+
+```java
+public static <E extends Comparable<E>> E max(List<E> list)
+
+public static <E extends Comparable<? super E>> E max(List<? extends E> List)
+```
+
+1. `List<E> list` -> `List<? extends E> list`
+
+   - list는 인스턴스 E를 생산
+
+2. `Comparable<E>` -> `Comparable<? super E>`
+   - Comparable<E>는 E 인스턴스를 소비
+   - (선후관계를 뜻하는 정수 반환)
+
+<br/>
+
+- Comparable은 언제나 소비자
+
+  - 일반적으로 `Comparable<E> 보다는 Comparable<? super E>를 사용하는 편이 낫다.`
+
+- Comparator도 마찬가지
+
+<br/>
+
+### 예시 3-2
+
+#### 수정된 max 활용
+
+```java
+List<ScheduledFuture<?>> scheduledFutures = ...;
+```
+
+```
+public interface Comparable<E>
+public interface Delayed extends Comparable<Delayed>
+public interface ScheduledFuture<V> extends Delayed, Future<V>
+```
+
+```java
+public static void main(String[] args) throws InterruptedException {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+        List<ScheduledFuture<?>> scheduledFutures = new ArrayList<>();
+
+        ScheduledFuture<?> future1 = scheduler.schedule(() ->
+                System.out.println("Task 1"), 3, TimeUnit.SECONDS);
+        scheduledFutures.add(future1);
+
+        ScheduledFuture<?> future2 = scheduler.schedule(() ->
+                System.out.println("Task 2"), 1, TimeUnit.SECONDS);
+        scheduledFutures.add(future2);
+
+        ScheduledFuture<?> future3 = scheduler.schedule(() ->
+                System.out.println("Task 3"), 5, TimeUnit.SECONDS);
+        scheduledFutures.add(future3);
+
+        try {
+            // 핵심
+            ScheduledFuture<?> maxFuture = max(scheduledFutures);
+            System.out.println("가장 긴 지연 시간을 가진 작업 (예상): " + maxFuture);
+
+            for (ScheduledFuture<?> future : scheduledFutures) {
+                long delay = future.getDelay(TimeUnit.MILLISECONDS);
+                System.out.println(future + " 남은 지연 시간: " + delay + " ms");
+            }
+            long maxDelay = maxFuture.getDelay(TimeUnit.MILLISECONDS);
+            System.out.println("maxFuture의 남은 지연 시간: " + maxDelay + " ms");
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        scheduler.shutdown();
+        scheduler.awaitTermination(6, TimeUnit.SECONDS);
+    }
+```
+
+<br/>
+
+---
+
+### 예시4 - 타입 캡처링 기법
+
+#### swap 메서드의 두 가지 선언
+
+```java
+//1. 비한정적 타입매개변수
+public static <E> void swap(List<E> list, int i, int j);
+//2. 비한정적 와일드카드
+public static void swap(List<?> list, int i, int j);
+```
+
+<br/>
+
+- 기본 규칙 : 메서드 선언에 타입 매개변수가 한 번만 나오면 와일드 카드로 대체하라.
+
+<br/>
+
+1. 비한정적 타입 매개변수 -> 비한정적 와일드카드
+   ```java
+   // E는 메서드 선언에서 List<E>의 타입 인수로 딱 한 번만 사용
+   public static <E> void printFirst(List<E> list) {
+       if (!list.isEmpty()) System.out.println(list.get(0));
+   }
+   ```
+   ```java
+   public static void printFirst(List<?> list)
+   ```
+
+<br/>
+
+2. 한정적 타입 매개변수 -> 한정적 와일드카드
+   ```java
+   // E는 List<E>와 E extends Number에서 사용
+   public static <E extends Number> boolean areAllNumbers(List<E> list) {
+       for (E element : list) {
+           // element는 Number 또는 Number의 하위 타입
+       }
+       return true;
+   }
+   ```
+   ```java
+   public static boolean areAllNumbers(List<? extends Number> list)
+   ```
+
+<br/>
+
+#### 문제점
+
+```java
+public static void swap(List<?> list, int i, int j) {
+    list.set(i, list.set(j, list.get(i)));
+}
+```
+
+- 오류
+  ```bash
+  java: incompatible types: java.lang.Object cannot be converted to capture#1 of ?
+  ```
+- 컴파일러는 list가 실제로 어떤 타입의 객체를 담고 있는지 정확히 알 수 없음
+- List<?> 에는 null만 추가 가능
+
+<br/>
+
+#### 타입 캡처링
+
+```java
+public static void swap(List<?> list, int i, int j) {
+    swapHelper(list, i, j);
+}
+
+// 도우미 메서드
+private static <E> void swapHelper(List<?> list, int i, int j) {
+    list.set(i, list.set(j, list.get(i)));
+}
+```
+
+1. 비록 list가 List<?>로 선언되었지만, 이 특정 list 인스턴스는 런타임에 어떤 구체적인 타입을 획득
+2. 컴파일러는 이 알 수 없는 구체적인 타입을 swapHelper 메서드의 타입 매개변수 E로 캡처
+3. 컴파일러가 E를 캡처된 실제 타입으로 간주하므로, swapHelper 내부에서는 list를 List<E>처럼 안전하게 처리
+
+<br/>
+
+### 핵심 정리
+
+- 조금 복잡하더라도 와일드카드 타입을 적용하면 API가 훨씬 유연해진다.
+
+<br/>
+
+- 그러니 널리 쓰일 라이브러리를 작성한다면 반드시 와일드카드 타입을 적절히 사용해줘야 한다.
+
+<br/>
+
+- PECS 공식을 기억하자.
+  - 즉, 생산자는 extends를 소비자는 super를 사용한다.
+  - Comparable과 Comparator는 모두 소비자라는 사실도 잊지 말자.
+
+## <br/><br/>
+
+### 스스로 질문 & 그 외
+
+#### `<? extends E>` 직관적으로 봤을때, E를 상속한 클래스만 허용되는 것 같다?
+
+- 상속의 의미를 엄격하게 해석하면 클래스가 자기 자신을 상속하는 것은 아니므로 "extends"라는 키워드가 완벽하게 들어맞지는 않는다는 점을 지적
+- 자기 자신도 포함합니다
+- `<? super E>` 또한 마찬가지
+
+<br/>
+
+#### 입력 매개변수가 생산자와 소비자 역할을 동시에 한다면?
+
+- 타입을 정확히 지정해야 하는 상황으로, 이떄는 와일드카드 타입을 쓰지 말아야 한다
+
+<br/>
+
+#### `<E extends Comparable<? super E>>` 주의사항?
+
+- 타입 계층 구조 내에서 Comparable 구현이 일관성 있고 안전하게 이루어진다면 상위 및 하위 타입 간의 비교에 문제가 없을 것이라는 합리적인 가정을 바탕으로 설계된 것
+
+<br/>
+
+#### ScheduledFuture란?
+
+- Java의 동시성 유틸리티에서 제공하는 인터페이스
+- 미래에 특정 시간 이후에 실행될 작업의 결과를 나타냄
+- Future 인터페이스 확장:
+  - 비동기 작업의 결과를 관리하는 기능 제공
+  - 작업을 취소, 작업이 완료 확인, 작업 결과 반환 가능
+  - 결과를 얻을 때까지 대기 가능
+- Delayed 인터페이스 확장:
+  - 작업이 실행될 때까지 남은 지연 시간 확인 가능
+  - 지연 시간을 기준으로 다른 예약된 작업과 비교가능
+    - Comparable 인터페이스 구현
+
+<br/>
+
+#### 예시4 클라이언트에서 사용할 때 차이?
+
+```java
+private static <E> void swapHelper(List<?> list, int i, int j)
+public static void swap(List<?> list, int i, int j)
+```
+
+1. `public static <E> void swap(List<E> list, int i, int j)`
+
+   - 이 메서드를 호출할 때는 특정 타입의 List를 인수로 전달
+   - 컴파일러는 전달된 List의 타입을 기반으로 E의 타입을 추론
+
+   ```java
+   List<String> names = new ArrayList<>(List.of("Alice", "Bob"));
+   SwapExample.swap(names, 0, 1); // 컴파일러는 E를 String으로 추론
+
+   List<Integer> numbers = new ArrayList<>(List.of(1, 2));
+   SwapExample.swap(numbers, 0, 1); // 컴파일러는 E를 Integer로 추론
+   ```
+
+   - 제약 사항
+     - 클라이언트는 타입이 명확하게 정의된 List를 사용해야 합니다.
+     - List<?> 타입의 변수를 직접 전달하려고 하면 컴파일러가 E의 타입을 추론할 수 없어 에러가 발생할 수 있습니다.
+
+   ```java
+   List<?> unknownList = new ArrayList<>(List.of(1, "two"));
+   // SwapExample.swap(unknownList, 0, 1); // 컴파일 에러 발생 (타입 추론 불가
+   ```
+
+<br/>
+
+2. `public static void swap(List<?> list, int i, int j)`
+
+   - 어떤 타입의 List라도 인수로 전달 가능
+   - List의 요소 타입이 구체적으로 알려지지 않은 List<?> 타입의 변수도 문제없이 전달 가능
+
+   ```Java
+   SwapExample.swap(names, 0, 1); // List<String>은 List<?>로 업캐스팅 가능
+   SwapExample.swap(numbers, 0, 1); // List<Integer>은 List<?>로 업캐스팅 가능
+
+   List<?> unknownList = new ArrayList<>(List.of(1, "two"));
+   SwapExample.swap(unknownList, 0, 1); // 정상적으로 호출 가능
+   ```
+
+   - 유연성: 이 버전은 타입에 대한 제약이 적어 더 많은 상황에서 사용할 수 있습니다.
