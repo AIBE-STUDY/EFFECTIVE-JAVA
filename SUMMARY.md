@@ -38,8 +38,6 @@
   - [23. 태그 달린 클래스보다는 클래스 계층구조를 활용하라](effective-java/section4/23.Prefer_class_hierarchies_to_tagged_classes.md)
   - [24. 멤버 클래스는 되도록 static으로 만들라](effective-java/section4/24.Favor_static_member_classes_over_nonstatic.md)
   - [25. 톱레벨 클래스는 한 파일에 하나만 담으라](effective-java/section4/25.Limit_source_files_to_a_single_top_level_class.md)
-  - [24. 멤버 클래스는 되도록 static으로 만들라](effective-java/section5/24.Favor_static_member_classes_over_nonstatic.md)
-  - [25. 톱레벨 클래스는 한 파일에 하나만 담으라](effective-java/section5/25.Limit_source_files_to_a_single_top_level_class.md)
 - [제네릭](effective-java/section5.md)
   - [26. 로 타입은 사용하지 말라](effective-java/section5/26.Dont_use_raw_types.md)
   - [27. 비검사 경고를 제거하라](effective-java/section5/27.Eliminate_unchecked_warnings.md)
