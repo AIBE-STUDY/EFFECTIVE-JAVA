@@ -58,7 +58,7 @@
   - [40. @Override 애너테이션을 일관되게 사용하라](effective-java/section6/40.Consistently_use_the_Override_annotation.md)
   - [41. 정의하려는 것이 타입이라면 마커 인터페이스를 사용하라](effective-java/section6/41.Use_marker_interfaces_to_define_types.md)
 
-- [7장 람다와 스트림](effective-java/section7.md)
+- [람다와 스트림](effective-java/section7.md)
   - [42. 익명 클래스보다는 람다를 사용하라](effective-java/section7/42.Prefer_lambdas_to_anonymous_classes.md)
   - [43. 람다보다는 메서드 참조를 사용하라](effective-java/section7/43.Prefer_method_references_to_lambdas.md)
   - [44. 표준 함수형 인터페이스를 사용하라](effective-java/section7/44.Favor_the_use_of_standard_functional_interfaces.md)
@@ -67,7 +67,7 @@
   - [47. 반환 타입으로는 스트림보다 컬렉션이 낫다](effective-java/section7/47.Prefer_Collection_to_Stream_as_a_return_type.md)
   - [48. 스트림 병렬화는 주의해서 적용하라](effective-java/section7/48.Use_caution_when_making_streams_parallel.md)
 
-- [8장 메서드](effective-java/section8.md)
+- [메서드](effective-java/section8.md)
   - [49. 매개변수가 유효한지 검사하라](effective-java/section8/49.Check_parameters_for_validity.md)
   - [50. 적시에 방어적 복사본을 만들라](effective-java/section8/50.Make_defensive_copies_when_needed.md)
   - [51. 메서드 시그니처를 신중히 설계하라](effective-java/section8/51.Design_method_signatures_carefully.md)
@@ -77,7 +77,7 @@
   - [55. 옵셔널 반환은 신중히 하라](effective-java/section8/55.Return_optionals_judiciously.md)
   - [56. 공개된 API 요소에는 항상 문서화 주석을 작성하라](effective-java/section8/56.Write_doc_comments_for_all_exposed_API_elements.md)
 
-- [9장 일반적인 프로그래밍 원칙](effective-java/section9.md)
+- [일반적인 프로그래밍 원칙](effective-java/section9.md)
   - [57. 지역변수의 범위를 최소화하라](effective-java/section9/57.Minimize_the_scope_of_local_variables.md)
   - [58. 전통적인 for 문보다는 for-each 문을 사용하라](effective-java/section9/58.Prefer_for_each_loops_to_traditional_for_loops.md)
   - [59. 라이브러리를 익히고 사용하라](effective-java/section9/59.Know_and_use_the_libraries.md)
@@ -91,7 +91,7 @@
   - [67. 최적화는 신중히 하라](effective-java/section9/67.Optimize_judiciously.md)
   - [68. 일반적으로 통용되는 명명 규칙을 따르라](effective-java/section9/68.Adhere_to_generally_accepted_naming_conventions.md)
 
-- [10장 예외](effective-java/section10.md)
+- [예외](effective-java/section10.md)
   - [69. 예외는 진짜 예외 상황에만 사용하라](effective-java/section10/69.Use_exceptions_only_for_exceptional_conditions.md)
   - [70. 복구할 수 있는 상황에는 검사 예외를, 프로그래밍 오류에는 런타임 예외를 사용하라](effective-java/section10/70.Use_checked_exceptions_for_recoverable_conditions_and_runtime_exceptions_for_programming_errors.md)
   - [71. 필요 없는 검사 예외 사용은 피하라](effective-java/section10/71.Avoid_unnecessary_use_of_checked_exceptions.md)
@@ -102,7 +102,7 @@
   - [76. 가능한 한 실패 원자적으로 만들라](effective-java/section10/76.Strive_for_failure_atomicity.md)
   - [77. 예외를 무시하지 말라](effective-java/section10/77.Dont_ignore_exceptions.md)
 
-- [11장 동시성](effective-java/section11.md)
+- [동시성](effective-java/section11.md)
   - [78. 공유 중인 가변 데이터는 동기화해 사용하라](effective-java/section11/78.Synchronize_access_to_shared_mutable_data.md)
   - [79. 과도한 동기화는 피하라](effective-java/section11/79.Avoid_excessive_synchronization.md)
   - [80. 스레드보다는 실행자, 태스크, 스트림을 애용하라](effective-java/section11/80.Prefer_executors_tasks_and_streams_to_threads.md)
@@ -111,7 +111,7 @@
   - [83. 지연 초기화는 신중히 사용하라](effective-java/section11/83.Use_lazy_initialization_judiciously.md)
   - [84. 프로그램의 동작을 스레드 스케줄러에 기대지 말라](effective-java/section11/84.Dont_depend_on_the_thread_scheduler.md)
 
-- [12장 직렬화](effective-java/section12.md)
+- [직렬화](effective-java/section12.md)
   - [85. 자바 직렬화의 대안을 찾으라](effective-java/section12/85.Prefer_alternatives_to_Java_serialization.md)
   - [86. Serializable을 구현할지는 신중히 결정하라](effective-java/section12/86.Implement_Serializable_with_great_caution.md)
   - [87. 커스텀 직렬화 형태를 고려해보라](effective-java/section12/87.Consider_using_a_custom_serialized_form.md)
