@@ -51,7 +51,6 @@
   - [34. int 상수 대신 열거 타입을 사용하라](effective-java/section6/34.Use_enums_instead_of_int_constants.md)
   - [35. ordinal 메서드 대신 인스턴스 필드를 사용하라](effective-java/section6/35.Use_instance_fields_instead_of_ordinals.md)
   - [36. 비트 필드 대신 EnumSet을 사용하라](effective-java/section6/36.Use_EnumSet_instead_of_bit_fields.md)
-- [6장 열거 타입과 애너테이션](effective-java/section6.md)
   - [37. ordinal 인덱싱 대신 EnumMap을 사용하라](effective-java/section6/37.Use_EnumMap_instead_of_ordinal_indexing.md)
   - [38. 확장할 수 있는 열거 타입이 필요하면 인터페이스를 사용하라](effective-java/section6/38.Emulate_extensible_enums_with_interfaces.md)
   - [39. 명명 패턴보다 애너테이션을 사용하라](effective-java/section6/39.Prefer_annotations_to_naming_patterns.md)
