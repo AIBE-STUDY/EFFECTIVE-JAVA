@@ -72,7 +72,7 @@
   - [51. 메서드 시그니처를 신중히 설계하라](effective-java/section8/51.Design_method_signatures_carefully.md)
   - [52. 다중정의는 신중히 사용하라](effective-java/section8/52.Use_overloading_judiciously.md)
   - [53. 가변인수는 신중히 사용하라](effective-java/section8/53.Use_varargs_judiciously.md)
-  - [54. null이 아닌, 빈 컬렉션이나 배열을 반환하라](effective-java/section8/54.Return_empty_collections_or_arrays_not_nulls.md)
+  - [54. null이 아닌, 빈 컬렉션이나 배열을 반환하라](effective-java/section8/54.Return_empty_collections_or_arrays,_not_nulls.md)
   - [55. 옵셔널 반환은 신중히 하라](effective-java/section8/55.Return_optionals_judiciously.md)
   - [56. 공개된 API 요소에는 항상 문서화 주석을 작성하라](effective-java/section8/56.Write_doc_comments_for_all_exposed_API_elements.md)
 
