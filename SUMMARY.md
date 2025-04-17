@@ -62,7 +62,7 @@
   - [43. 람다보다는 메서드 참조를 사용하라](effective-java/section7/43.Prefer_method_references_to_lambdas.md)
   - [44. 표준 함수형 인터페이스를 사용하라](effective-java/section7/44.Favor_the_use_of_standard_functional_interfaces.md)
   - [45. 스트림은 주의해서 사용하라](effective-java/section7/45.Use_streams_judiciously.md)
-  - [46. 스트림에서는 부작용 없는 함수를 사용하라](effective-java/section7/46.Prefer_side_effect_free_functions_in_streams.md)
+  - [46. 스트림에서는 부작용 없는 함수를 사용하라](effective-java/section7/46.Prefer_side-effect-free_functions_in_streams)
   - [47. 반환 타입으로는 스트림보다 컬렉션이 낫다](effective-java/section7/47.Prefer_Collection_to_Stream_as_a_return_type.md)
   - [48. 스트림 병렬화는 주의해서 적용하라](effective-java/section7/48.Use_caution_when_making_streams_parallel.md)
 
